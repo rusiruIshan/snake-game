@@ -189,7 +189,7 @@ public class Snake extends JFrame implements Runnable, KeyListener {
         }
         if(lengthButtonX[0] == lengthButtonX[gu-1] && lengthButtonY[0] == lengthButtonY[gu - 1]){
             food = false;
-            score += 25;
+            score += 1;
             scoreTextArea.setText("Score ->> " + score);
 //            if(score%50 == 0 && bounsFlag == true){
 //                panel1.add(bounsfood);
