@@ -116,6 +116,15 @@ public class Snake extends JFrame implements Runnable, KeyListener {
         game = new JMenu("Game");
         
         JMenuItem exit = new JMenuItem("Exit");
+        JMenuItem newgame = new JMenuItem("New Game");
+        newgame.addActionListener(
+                new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                reset();
+            }
+        }
+        );
         
         exit.addActionListener(
                 new ActionListener() {
@@ -125,8 +134,7 @@ public class Snake extends JFrame implements Runnable, KeyListener {
             }
         }
         );
-        
-       
+        game.add(newgame);
         game.addSeparator();
         game.add(exit);
         mymbar.add(game);
@@ -303,5 +311,18 @@ public class Snake extends JFrame implements Runnable, KeyListener {
     
     public static void main(String[] args) {
         Snake snake = new Snake() {};
+    }
+    
+    void reset(){
+        initializeValue();
+        setFocusable(true);
+        addKeyListener(this);
+        panel1.removeAll();
+        myThread.stop();
+        createFirstSnake();
+        scoreTextArea.setText("Score ->> " + score);
+        myThread = new Thread(this);
+        myThread.start();
+        running = true;
     }
 }
