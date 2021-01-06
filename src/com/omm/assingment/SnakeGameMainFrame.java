@@ -36,14 +36,14 @@ public class SnakeGameMainFrame extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(243, 134, 48));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Snake Game");
 
-        jButton1.setBackground(new java.awt.Color(51, 102, 255));
+        jButton1.setBackground(new java.awt.Color(0, 204, 0));
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton1.setText("Play");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -90,7 +90,8 @@ public class SnakeGameMainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        Snake s = new Snake() {};
+        s.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
