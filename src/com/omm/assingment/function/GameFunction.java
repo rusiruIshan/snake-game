@@ -21,4 +21,6 @@ public interface GameFunction {
     public boolean createFirstSnake (JButton[] lengthButton, JPanel panel1,int [] lengthButtonX,int [] lengthButtonY);
     
     public void gameOver (Thread myThread, JTextArea scoreTextArea, int score, Timer timer);
+    
+    public int increaseScore  (int score, JTextArea scoreTextArea);
 }

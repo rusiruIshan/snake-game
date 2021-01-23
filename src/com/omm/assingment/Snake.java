@@ -185,8 +185,8 @@ public class Snake extends JFrame implements Runnable, KeyListener {
         }
         if(lengthButtonX[0] == lengthButtonX[gu-1] && lengthButtonY[0] == lengthButtonY[gu - 1]){
             food = false;
-            score += 1;
-            scoreTextArea.setText("Score ->> " + score);
+            score = gameFunction.increaseScore(score, scoreTextArea);
+//            scoreTextArea.setText("Score ->> " + score);
 //            if(score%50 == 0 && bounsFlag == true){
 //                panel1.add(bounsfood);
 //                bounsfood.setBounds((10*random.nextInt(50)), (10*random.nextInt(25)), 15, 15);

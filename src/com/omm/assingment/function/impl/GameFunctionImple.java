@@ -67,5 +67,12 @@ public class GameFunctionImple implements GameFunction{
             myThread.join();
         }catch(InterruptedException ex){}
     }
+
+    @Override
+    public int increaseScore(int score, JTextArea scoreTextArea) {
+        
+            scoreTextArea.setText("Score ->> " + score);
+            return ++score;
+    }
     
 }
