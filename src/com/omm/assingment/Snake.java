@@ -5,6 +5,8 @@
  */
 package com.omm.assingment;
 
+import com.omm.assingment.function.GameFunction;
+import com.omm.assingment.function.impl.GameFunctionImple;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Point;
@@ -13,6 +15,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
@@ -46,6 +50,9 @@ public class Snake extends JFrame implements Runnable, KeyListener {
     int SCREEN_WIDTH = 1000;
     int SCREEN_HEIGHT = 590;
     
+    GameFunction gameFunction = new GameFunctionImple();
+    Timer timer;
+    
     public void initializeValue(){
         gu = 3;
         lengthButtonX[0] = 200;
@@ -76,7 +83,7 @@ public class Snake extends JFrame implements Runnable, KeyListener {
         bounsfood = new JButton();
         bounsfood.setEnabled(false);
         
-        createFirstSnake();
+        running = gameFunction.createFirstSnake(lengthButton,panel1,lengthButtonX,lengthButtonY);
         panel1.setLayout(null);
         panel2.setLayout(new GridLayout(0,1));
         panel1.setBounds(0,0,x,y);
@@ -97,19 +104,19 @@ public class Snake extends JFrame implements Runnable, KeyListener {
         myThread = new Thread(this);
         myThread.start();
         System.out.println(panel1.isFocusable());
+        
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                gu = gameFunction.snakeGroup(lengthButton, gu, panel1, lengthButtonX, lengthButtonY, false);
+
+            }
+        };
+        timer = new Timer("foodTimer");
+        timer.scheduleAtFixedRate(timerTask, 10000, 10000);
     }
     
-    private void createFirstSnake() {
-        for(int i=0; i < 3; i++){
-            lengthButton[i] = new JButton("lb"+ i);
-            lengthButton[i].setEnabled(false);
-            panel1.add(lengthButton[i]);
-            lengthButton[i].setBounds(lengthButtonX[i], lengthButtonY[i], 10, 10);
-            lengthButtonX[i+1] = lengthButtonX[i] - 10;
-            lengthButtonY[i+1] = lengthButtonY[i];
-        }
-        running = true;
-    }
+
     
     private void createbar() {
         mymbar = new JMenuBar();
@@ -155,18 +162,7 @@ public class Snake extends JFrame implements Runnable, KeyListener {
         setJMenuBar(mymbar); 
     }
     
-    void grouwp(){
-        lengthButton[gu] = new JButton();
-        lengthButton[gu].setEnabled(false);
-        panel1.add(lengthButton[gu]);
-        int a = 10 + (10 * random.nextInt(48));
-        int b = 10 + (10 * random.nextInt(23));
-        lengthButtonX[gu] = a;
-        lengthButtonY[gu] = b;
-        lengthButton[gu].setBounds(a,b,10,10);
-        gu++;
-        
-    }
+
     
     void moveForward(){
         for(int i=0; i < gu; i++){
@@ -209,7 +205,7 @@ public class Snake extends JFrame implements Runnable, KeyListener {
         }
         
         if(food == false){
-            grouwp();
+            gu = gameFunction.snakeGroup(lengthButton, gu, panel1, lengthButtonX, lengthButtonY, true);
             food = true;
         }else {
             lengthButton[gu-1].setBounds(lengthButtonX[gu - 1], lengthButtonY[gu - 1], 10, 10);
@@ -217,7 +213,7 @@ public class Snake extends JFrame implements Runnable, KeyListener {
         
         for(int i= 1; i < gu; i++){
             if(lengthButtonPoint[0] == lengthButtonPoint[i]){
-                Gameover();
+                gameFunction.gameOver(myThread, scoreTextArea, score, timer);
                 break;
             }
         }
@@ -225,29 +221,24 @@ public class Snake extends JFrame implements Runnable, KeyListener {
 
         
         if(lengthButtonX[0] < 0){
-            Gameover();
+            gameFunction.gameOver(myThread, scoreTextArea, score, timer);
         }
 
         if(lengthButtonX[0] > 989){
-            Gameover();
+            gameFunction.gameOver(myThread, scoreTextArea, score, timer);
         }
 
         if(lengthButtonY[0] < 0){
-            Gameover();
+            gameFunction.gameOver(myThread, scoreTextArea, score, timer);
         }
 
         if(lengthButtonY[0] > 489){
-            Gameover();
+            gameFunction.gameOver(myThread, scoreTextArea, score, timer);
         }
         show();
     }
     
-    void Gameover(){
-        scoreTextArea.setText("Game over ->>" + score);
-        try{
-            myThread.join();
-        }catch(InterruptedException ex){}
-    }
+
     
     @Override
     public void keyPressed(KeyEvent e) {
@@ -319,7 +310,7 @@ public class Snake extends JFrame implements Runnable, KeyListener {
         addKeyListener(this);
         panel1.removeAll();
         myThread.stop();
-        createFirstSnake();
+        running = gameFunction.createFirstSnake(lengthButton,panel1,lengthButtonX,lengthButtonY);
         scoreTextArea.setText("Score ->> " + score);
         myThread = new Thread(this);
         myThread.start();
